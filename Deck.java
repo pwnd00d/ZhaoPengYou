@@ -21,6 +21,8 @@ public class Deck
                 a++;
             }
         }
+        deck[52]=new Card(15,null);
+        deck[53]=new Card(16,null);
     }
     public void shuffle()
     {
