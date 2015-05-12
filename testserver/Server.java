@@ -1,5 +1,8 @@
 package testserver;
 
+import java.util.ArrayList;
+import java.io.*;
+import java.net.*;
 
 /**
  * Write a description of class Server here.
@@ -9,27 +12,50 @@ package testserver;
  */
 public class Server
 {
-    // instance variables - replace the example below with your own
-    private int x;
-
-    /**
-     * Constructor for objects of class Server
-     */
+    private ArrayList<BufferedReader> in;
+    private ArrayList<PrintWriter> out;
+    private ArrayList<Player> players;
+    private Game g;
+    
     public Server()
     {
-        // initialise instance variables
-        x = 0;
+        in = new ArrayList<BufferedReader>();
+        out = new ArrayList<PrintWriter>();
+        players = new ArrayList<Player>();
+        g = new Game();
     }
-
-    /**
-     * An example of a method - replace this comment with your own
-     * 
-     * @param  y   a sample parameter for a method
-     * @return     the sum of x and y 
-     */
-    public int sampleMethod(int y)
+    
+    public void loop()
     {
-        // put your code here
-        return x + y;
+        while(true){
+            try{
+                ServerSocket ss = new ServerSocket(9999);
+                Socket s = ss.accept();
+                in.add(new BufferedReader(new InputStreamReader(s.getInputStream())));
+                out.add(new PrintWriter(s.getOutputStream()));
+                players.add(new Player());
+            }
+            catch(IOException e){
+                System.err.println(e);
+            }
+        }
+    }
+    
+    public class Game extends Thread
+    {
+        public void run()
+        {
+            while(true){
+                try{
+                    for(Player p : players){
+                        p.move();
+                    }
+                    sleep(20);
+                }
+                catch(Exception e){
+                    System.err.println(e);
+                }
+            }
+        }
     }
 }
