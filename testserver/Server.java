@@ -36,7 +36,6 @@ public class Server
     {
         g.start();
         while(true){
-            System.out.println("a");
             ServerSocket ss = new ServerSocket(9999);
             try{
                 Socket s = ss.accept();
@@ -59,7 +58,6 @@ public class Server
         public void run()
         {
             while(true){
-                System.out.println("b");
                 try{
                     for(int i = 0; i<players.size(); i++) {
                         String l = in.get(i).readLine().toUpperCase();
@@ -76,7 +74,9 @@ public class Server
                             p.a(0,-1);
                         else if(l.equals("QUIT")) {
                             players.set(i, null);
+                            in.get(i).close();
                             in.set(i, null);
+                            out.get(i).close();
                             out.set(i, null);
                             clients.get(i).close();
                             clients.set(i,null);
