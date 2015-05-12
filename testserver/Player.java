@@ -1,10 +1,10 @@
 package testserver;
 
 /**
- * Write a description of class Test here.
+ * Player
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Alex Shi
+ * @version 0
  */
 public class Player
 {
@@ -18,9 +18,20 @@ public class Player
         b=(int)(Math.random()*256);
     }
     
+    public void a(int x, int y)
+    {
+        vx+=x;
+        vy+=y;
+    }
+    
     public void move()
     {
         x+=vx;
         y+=vy;
+    }
+    
+    public String toString()
+    {
+        return x + " " + y;
     }
 }

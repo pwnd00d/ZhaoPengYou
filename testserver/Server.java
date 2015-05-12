@@ -17,6 +17,8 @@ public class Server
     private ArrayList<Player> players;
     private Game g;
     
+    
+    
     public Server()
     {
         in = new ArrayList<BufferedReader>();
@@ -27,6 +29,7 @@ public class Server
     
     public void loop()
     {
+        g.run();
         while(true){
             try{
                 ServerSocket ss = new ServerSocket(9999);
@@ -47,8 +50,25 @@ public class Server
         {
             while(true){
                 try{
-                    for(Player p : players){
-                        p.move();
+                    for(int i = 0; i<players.size(); i++) {
+                        String l = in.get(i).readLine().toUpperCase();
+                        Player p = players.get(i);
+                        if(l.equals("RIGHT"))
+                            p.a(1,0);
+                        else if(l.equals("UP"))
+                            p.a(0,1);
+                        else if(l.equals("LEFT"))
+                            p.a(-1,0);
+                        else if(l.equals("DOWN"))
+                            p.a(0,-1); 
+                        players.get(i).move();
+                    }
+                    for(PrintWriter p : out) {
+                        p.println("UPDATE");
+                        for(Player pl : players) {
+                            p.println(pl);
+                        }
+                        p.println("DONE");
                     }
                     sleep(20);
                 }
