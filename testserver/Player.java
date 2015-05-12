@@ -32,6 +32,6 @@ public class Player
     
     public String toString()
     {
-        return x + " " + y;
+        return x+" "+y+" "+r+" "+g+" "+b;
     }
 }

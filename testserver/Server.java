@@ -14,10 +14,15 @@ public class Server
 {
     private ArrayList<BufferedReader> in;
     private ArrayList<PrintWriter> out;
+    private ArrayList<Socket> clients;
     private ArrayList<Player> players;
     private Game g;
     
-    
+    public static void main(String[] args) throws IOException
+    {
+        Server s = new Server();
+        s.loop();
+    }
     
     public Server()
     {
@@ -27,19 +32,24 @@ public class Server
         g = new Game();
     }
     
-    public void loop()
+    public void loop() throws IOException
     {
-        g.run();
+        g.start();
         while(true){
+            System.out.println("a");
+            ServerSocket ss = new ServerSocket(9999);
             try{
-                ServerSocket ss = new ServerSocket(9999);
                 Socket s = ss.accept();
                 in.add(new BufferedReader(new InputStreamReader(s.getInputStream())));
                 out.add(new PrintWriter(s.getOutputStream()));
                 players.add(new Player());
+                clients.add(s);
             }
             catch(IOException e){
                 System.err.println(e);
+            }
+            finally{
+                ss.close();
             }
         }
     }
@@ -49,10 +59,13 @@ public class Server
         public void run()
         {
             while(true){
+                System.out.println("b");
                 try{
                     for(int i = 0; i<players.size(); i++) {
                         String l = in.get(i).readLine().toUpperCase();
                         Player p = players.get(i);
+                        if(p==null || l==null)
+                            continue;
                         if(l.equals("RIGHT"))
                             p.a(1,0);
                         else if(l.equals("UP"))
@@ -60,10 +73,21 @@ public class Server
                         else if(l.equals("LEFT"))
                             p.a(-1,0);
                         else if(l.equals("DOWN"))
-                            p.a(0,-1); 
+                            p.a(0,-1);
+                        else if(l.equals("QUIT")) {
+                            players.set(i, null);
+                            in.set(i, null);
+                            out.set(i, null);
+                            clients.get(i).close();
+                            clients.set(i,null);
+                            continue;
+                        }
                         players.get(i).move();
                     }
+
                     for(PrintWriter p : out) {
+                        if(p==null)
+                            continue;
                         p.println("UPDATE");
                         for(Player pl : players) {
                             p.println(pl);
