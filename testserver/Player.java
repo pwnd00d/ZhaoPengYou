@@ -1,5 +1,3 @@
-package testserver;
-
 /**
  * Player
  * 

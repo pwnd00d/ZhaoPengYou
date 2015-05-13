@@ -1,5 +1,3 @@
-package testclient;
-
 import java.awt.event.*;
 import javax.swing.*;
 

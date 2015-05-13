@@ -1,5 +1,3 @@
-package testserver;
-
 import java.util.ArrayList;
 import java.io.*;
 import java.net.*;
@@ -12,8 +10,6 @@ import java.net.*;
  */
 public class Server
 {
-    private ArrayList<BufferedReader> in;
-    private ArrayList<PrintWriter> out;
     private ArrayList<Socket> clients;
     private ArrayList<Player> players;
     private Game g;
@@ -26,9 +22,8 @@ public class Server
     
     public Server()
     {
-        in = new ArrayList<BufferedReader>();
-        out = new ArrayList<PrintWriter>();
         players = new ArrayList<Player>();
+        clients = new ArrayList<Socket>();
         g = new Game();
     }
     
@@ -39,8 +34,6 @@ public class Server
             ServerSocket ss = new ServerSocket(9999);
             try{
                 Socket s = ss.accept();
-                in.add(new BufferedReader(new InputStreamReader(s.getInputStream())));
-                out.add(new PrintWriter(s.getOutputStream()));
                 players.add(new Player());
                 clients.add(s);
             }
@@ -59,8 +52,13 @@ public class Server
         {
             while(true){
                 try{
-                    for(int i = 0; i<players.size(); i++) {
-                        String l = in.get(i).readLine().toUpperCase();
+                    for(int i = 0; i<clients.size(); i++) {
+                        if(clients.get(i) == null)
+                            continue;
+                        BufferedReader in = new BufferedReader(new InputStreamReader(clients.get(i).getInputStream()));
+                        PrintWriter out = new PrintWriter(clients.get(i).getOutputStream());
+                        String l = in.readLine().toUpperCase();
+                        System.out.println(l==null?"":l);
                         Player p = players.get(i);
                         if(p==null || l==null)
                             continue;
@@ -74,10 +72,8 @@ public class Server
                             p.a(0,-1);
                         else if(l.equals("QUIT")) {
                             players.set(i, null);
-                            in.get(i).close();
-                            in.set(i, null);
-                            out.get(i).close();
-                            out.set(i, null);
+                            in.close();
+                            out.close();
                             clients.get(i).close();
                             clients.set(i,null);
                             continue;
@@ -85,7 +81,11 @@ public class Server
                         players.get(i).move();
                     }
 
-                    for(PrintWriter p : out) {
+                    for(Socket s : clients) {
+                        if(s==null)
+                            continue;
+                        PrintWriter p = new PrintWriter(s.getOutputStream());
+                        System.out.println(p);
                         if(p==null)
                             continue;
                         p.println("UPDATE");
@@ -94,10 +94,13 @@ public class Server
                         }
                         p.println("DONE");
                     }
-                    sleep(20);
+                    //sleep(20);
                 }
-                catch(Exception e){
-                    System.err.println(e);
+                //catch(InterruptedException e){
+                    //System.err.println(e);
+                //}
+                catch(IOException e){
+                    
                 }
             }
         }
