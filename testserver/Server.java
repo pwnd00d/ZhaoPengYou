@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 import java.io.*;
 import java.net.*;
 
@@ -57,26 +58,29 @@ public class Server
                             continue;
                         BufferedReader in = new BufferedReader(new InputStreamReader(clients.get(i).getInputStream()));
                         PrintWriter out = new PrintWriter(clients.get(i).getOutputStream());
-                        String l = in.readLine().toUpperCase();
-                        System.out.println(l==null?"":l);
+                        StringTokenizer st = new StringTokenizer(in.readLine().toUpperCase());
                         Player p = players.get(i);
-                        if(p==null || l==null)
+                        if(p==null)
                             continue;
-                        if(l.equals("RIGHT"))
-                            p.a(1,0);
-                        else if(l.equals("UP"))
-                            p.a(0,1);
-                        else if(l.equals("LEFT"))
-                            p.a(-1,0);
-                        else if(l.equals("DOWN"))
-                            p.a(0,-1);
-                        else if(l.equals("QUIT")) {
-                            players.set(i, null);
-                            in.close();
-                            out.close();
-                            clients.get(i).close();
-                            clients.set(i,null);
-                            continue;
+                        while(st.hasMoreTokens()) {
+                            String l=st.nextToken();
+                            System.out.println(l==null?"":l);
+                            if(l.equals("QUIT")) {
+                                players.set(i, null);
+                                in.close();
+                                out.close();
+                                clients.get(i).close();
+                                clients.set(i,null);
+                                continue;
+                            }
+                            if(l.equals("RIGHT"))
+                                p.a(1,0);
+                            else if(l.equals("UP"))
+                                p.a(0,1);
+                            else if(l.equals("LEFT"))
+                                p.a(-1,0);
+                            else if(l.equals("DOWN"))
+                                p.a(0,-1);
                         }
                         players.get(i).move();
                     }
