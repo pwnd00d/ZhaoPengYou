@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 /**
  * Write a description of class Client here.
@@ -46,9 +47,21 @@ public class Client extends JPanel implements KeyListener
             while(!done){
                 done=keys[27];
                 PrintWriter out = new PrintWriter(s.getOutputStream());
+                String[] strs = {"LEFT", "UP", "RIGHT","DOWN"};
+                for(int k = 27; k<30; k++){
+                    if(keys[k])
+                        out.print(strs[k] + " ");
+                }
                 BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
                 String l = in.readLine();
-                System.out.println(l==null?"a":l);
+                while(!"UPDATE".equals(l)){
+                    l=in.readLine();
+                }
+                objs=new ArrayList<String>();
+                for(l=in.readLine(); !"DONE".equals(l); l=in.readLine()){
+                    objs.add(l);
+                }
+                System.out.println(l);
             }
         }
         catch(IOException e){
@@ -59,7 +72,8 @@ public class Client extends JPanel implements KeyListener
     public void paint(Graphics g)
     {
         super.paint(g);
-        g.drawString(message, 1, 1);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 20)); 
+        g.drawString(message, 1, 20);
     }
 
     public void keyPressed(KeyEvent e)
