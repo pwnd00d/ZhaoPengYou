@@ -1,11 +1,12 @@
-
+import java.util.HashMap;
+import java.util.Map;
 /**
  * Write a description of class Card here.
  * 
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Card
+public class Card implements Comparable<Card>
 {
     private int value;
     private String suit;
@@ -21,6 +22,10 @@ public class Card
         value = v;
         suit = s;
     }
+    public static void declare(Card c)
+   {
+
+   }
     public int value()
     {
         return value;
@@ -33,4 +38,8 @@ public class Card
     {
         return suit + " " + value;
     }
+    public int compareTo(Card c)
+   {
+
+   }
 }
