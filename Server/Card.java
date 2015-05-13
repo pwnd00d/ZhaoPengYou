@@ -10,6 +10,8 @@ public class Card implements Comparable<Card>
 {
     private int value;
     private String suit;
+    private int trumpvalue;
+    private String trumpsuit;
     /**
      * Ace val = 14
      * Joker:
@@ -22,8 +24,10 @@ public class Card implements Comparable<Card>
         value = v;
         suit = s;
     }
-    public static void declare(Card c)
+    public static void declare()
    {
+     trumpvalue = this.value();
+     trumpsuit = this.suit();
 
    }
     public int value()
