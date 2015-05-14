@@ -10,6 +10,7 @@ import java.util.HashSet;
  */
 public class Server
 {
+    private static int test = 0;
     public static void main(String[] args) throws IOException
     {
         (new Server()).run();
@@ -19,35 +20,36 @@ public class Server
     {
         ServerSocket ss = new ServerSocket(9999);
         while(true){
-            new Handler(ss.accept()).run();
+            (new Handler(ss.accept())).run();
+            test++;
         }
     }
 
     private class Handler extends Thread
     {
         private Socket socket;
-        private PrintWriter out;
-        private BufferedReader in;
 
         public Handler(Socket s)
         {
+            super("Handler for " + s);
             socket = s;
         }
 
         public void run()
         {
-            try{
-                out = new PrintWriter(socket.getOutputStream(),true);
-                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            try(
+                PrintWriter out = new PrintWriter(socket.getOutputStream(),true);
+                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                
+            ){
                 out.print("Type a word to reverse: ");
                 String input;
                 while((input = in.readLine())!=null){
+                    System.out.println("it got here");
                     if(input.equals("quit"))
                         break;
                     out.println((new StringBuffer(input)).reverse().toString());
                 }
-                out.close();
-                in.close();
                 socket.close();
             }   
             catch(IOException e){

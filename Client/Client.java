@@ -10,7 +10,7 @@ public class Client
 
     public static void main(String[] args) throws IOException
     {
-        new Client().run();
+        (new Client()).run();
     }
 
     public void run() throws IOException
@@ -19,14 +19,14 @@ public class Client
         out = new PrintWriter(socket.getOutputStream(),true);
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         boolean done = false;
-        while(!done){
-            BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
-            String input;
-            while((input=in.readLine())!=null){
-                System.out.println(input);
-                out.write(stdin.readLine());
-            }
+
+        BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+        String input;
+        while((input=in.readLine())!=null){
+            System.out.println("hi");
+            out.println(stdin.readLine());
         }
+
         out.close();
         in.close();
         socket.close();
