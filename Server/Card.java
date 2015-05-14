@@ -10,26 +10,38 @@ public class Card implements Comparable<Card>
 {
     private int value;
     private String suit;
-    private int trumpvalue;
-    private String trumpsuit;
+
+    private static String trumpsuit;
+    private static int trumpvalue;
+    static Map<String,Integer> m = new HashMap<String,Integer>();
+
     /**
      * Ace val = 14
      * Joker:
-     * suit = null;
+     * suit = joker;
      *small joker, val = 15
      *big joker, val = 16
       */
     public Card(int v,String s)
     {
+        m.put("diamonds",2);
+        m.put("spades",3);
+        m.put("hearts",4);
+        m.put("clubs",1);
+        m.put("joker",6);
         value = v;
         suit = s;
     }
-    public static void declare()
-   {
-     trumpvalue = this.value();
-     trumpsuit = this.suit();
 
-   }
+    public static void declare(Card c)
+    {
+        trumpsuit = c.suit();
+        trumpvalue = c.value();
+        m.put(trumpsuit,5);
+    }
+
+
+
     public int value()
     {
         return value;
@@ -43,7 +55,14 @@ public class Card implements Comparable<Card>
         return suit + " " + value;
     }
     public int compareTo(Card c)
-   {
 
-   }
+    {
+        if(c.value() == trumpvalue && this.value() == trumpvalue)
+        {       
+                return m.get(this.suit) - m.get(c.suit); 
+        }
+        return 0;
+    }
+
+   
 }
