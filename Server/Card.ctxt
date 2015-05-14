@@ -1,11 +1,15 @@
 #BlueJ class context
 comment0.params=v\ s
 comment0.target=Card(int,\ java.lang.String)
-comment0.text=\n\ Ace\ val\ \=\ 14\n\ Joker\:\n\ suit\ \=\ null;\nsmall\ joker,\ val\ \=\ 15\nbig\ joker,\ val\ \=\ 16\n
-comment1.params=
-comment1.target=int\ value()
+comment0.text=\n\ Ace\ val\ \=\ 14\n\ Joker\:\n\ suit\ \=\ joker;\nsmall\ joker,\ val\ \=\ 15\nbig\ joker,\ val\ \=\ 16\n
+comment1.params=c
+comment1.target=void\ declare(Card)
 comment2.params=
-comment2.target=java.lang.String\ suit()
+comment2.target=int\ value()
 comment3.params=
-comment3.target=java.lang.String\ toString()
-numComments=4
+comment3.target=java.lang.String\ suit()
+comment4.params=
+comment4.target=java.lang.String\ toString()
+comment5.params=c
+comment5.target=int\ compareTo(Card)
+numComments=6
