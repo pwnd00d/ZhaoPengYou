@@ -1,33 +1,23 @@
+import java.net.Socket;
+import java.io.*;
+import javax.swing.*;
+import java.awt.event.*;
 
-/**
- * Write a description of class Client here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
 public class Client
 {
-    // instance variables - replace the example below with your own
-    private int x;
 
-    /**
-     * Constructor for objects of class Client
-     */
-    public Client()
+    private PrintWriter out;
+    private BufferedReader in;
+    
+    public void run() throws IOException
     {
-        // initialise instance variables
-        x = 0;
-    }
+        Socket socket = new Socket("localhost",9999);
+        out = new PrintWriter(socket.getOutputStream());
+        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        boolean done = false;
+        while(!done){
+            String input = 
+        }
 
-    /**
-     * An example of a method - replace this comment with your own
-     * 
-     * @param  y   a sample parameter for a method
-     * @return     the sum of x and y 
-     */
-    public int sampleMethod(int y)
-    {
-        // put your code here
-        return x + y;
     }
 }
