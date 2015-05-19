@@ -32,3 +32,4 @@ public class Client
         socket.close();
     }
 }
+//are we actually giving up on this - jung
